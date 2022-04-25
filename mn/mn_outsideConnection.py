@@ -19,11 +19,11 @@ def topology():
 
     info("*** Creating nodes\n")
 
-    c1 = net.addController('c1', controller=RemoteController, ip="127.0.0.1", port=6653)
+    c1 = net.addController('c1', controller=RemoteController, ip="127.0.0.1", port=6633)
     
     s1 = net.addSwitch('s1', cls = OVSSwitch, protocols='OpenFlow13')
-    h2 = net.addHost('h2', address="10.0.0.2")
-    h3 = net.addHost('h3', address="10.0.0.3")
+    h2 = net.addHost('h2', ip="10.0.0.2")
+    h3 = net.addHost('h3', ip="10.0.0.3")
 
     info("*** Creating links\n")
     net.addLink(s1, h2)

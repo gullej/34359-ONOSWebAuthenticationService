@@ -16,7 +16,7 @@
     <table>
         <tbody>
         <tr>
-            <td> IP addess </td>
+            <td> IP addess</td>
             <td> <input type="text" name="H" value="" size="20" /></td>
         </tr>
         <tr>

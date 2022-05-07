@@ -5,7 +5,7 @@
          version="4.0">
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
-        <servlet-class>AuthServlet</servlet-class>
+        <servlet-class>core.AuthServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>

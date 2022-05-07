@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="34359-ONOSWebAuthenticationService" />
+        <module name="WEBacl" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="34359-ONOSWebAuthenticationService" target="1.8" />
+      <module name="WEBacl" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

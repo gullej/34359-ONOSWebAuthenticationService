@@ -1,14 +1,14 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="WEBapp:war">
+  <artifact type="war" name="WEBacl:war">
     <output-path>$PROJECT_DIR$/target</output-path>
     <properties id="maven-jee-properties">
       <options>
-        <module>WEBapp</module>
+        <module>WEBacl</module>
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="ONOSWebAuthenticationService-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="WEBapp:war exploded" />
+    <root id="archive" name="WEBacl-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="WEBacl:war exploded" />
     </root>
   </artifact>
 </component>

@@ -1,7 +1,5 @@
 package core;
 
-import pojo.*;
-
 
 
 import javax.servlet.RequestDispatcher;

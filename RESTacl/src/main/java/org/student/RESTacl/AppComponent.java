@@ -153,8 +153,8 @@ public class AppComponent {
             if (block) {
                 log.info("Flow should be dropped");
                 log.info(dstSelector.build().toString());
-                log.info(srcDelector.build().toString());
-                dropFlow(packetSelector.build(),context);
+                log.info(srcSelector.build().toString());
+                dropFlow(dstSelector.build(),context);
                 context.block();    //Since we already handled the packet, BLOCK any access to it by other ONOS apps (e.g. the Forwarding app)
                 return;
             }

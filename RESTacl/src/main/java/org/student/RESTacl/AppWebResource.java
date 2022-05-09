@@ -54,27 +54,7 @@ public class AppWebResource extends AbstractWebResource {
     private final AccessControlList acl = AccessControlList.getInstance();
 
     /**
-     * Get hello world greeting.
-     *
-     * @return 200 OK
-     */
-    @GET
-    @Path("/")
-    public Response getGreeting() {
-        ObjectNode node = mapper().createObjectNode().put("hello", "world");
-        return ok(node).build();
-    }
-
-    @GET
-    @Path("/test")
-    public Response getTest() {
-        ObjectNode responseBody = new ObjectNode(JsonNodeFactory.instance);
-        responseBody.put("message", "it works!");
-        return Response.status(200).entity(responseBody).build();
-    }
-
-    /**
-     * Authenticates a client.
+     * Authenticates a client, and adds their IP to the ACL.
      *
      * @param stream input JSON
      * @return 200 OK if the port state was set to the given value

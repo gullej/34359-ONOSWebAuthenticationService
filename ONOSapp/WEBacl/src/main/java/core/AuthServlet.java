@@ -1,9 +1,5 @@
 package core;
 
-import pojo.*;
-
-
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

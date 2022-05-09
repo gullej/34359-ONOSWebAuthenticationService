@@ -77,13 +77,7 @@ public class AppComponent {
     protected ComponentConfigService cfgService;
 
     private AccessControlList acl = AccessControlList.getInstance();
-/*
-    private long PORTAL_PORT = 1;
-    private MacAddress PORTAL_MAC = MacAddress.valueOf("00:00:00:00:00:01");
-    private IpAddress PORTAL_IP = IpAddress.valueOf("10.0.0.1");
 
-
- */
     @Activate
     protected void activate() {
         appId = coreService.registerApplication("org.student.acl");
@@ -110,9 +104,6 @@ public class AppComponent {
         selectorBuilder2.matchEthType(Ethernet.TYPE_IPV4);
         selectorBuilder2.matchIPSrc(IpPrefix.valueOf(IpAddress.valueOf("10.0.2.15"),IpPrefix.MAX_INET_MASK_LENGTH));
         acl.addClient(selectorBuilder2.build());
-        for (TrafficSelector rule : acl.getAclRules()) {
-            log.info(rule.toString());
-        }
     }
 
     private class ReactivePacketProcessor implements PacketProcessor {
@@ -136,34 +127,24 @@ public class AppComponent {
                 default:
                     return;
             }
-            //Generate the traffic selector based on the packet that arrived.
-            TrafficSelector.Builder packetSelector = DefaultTrafficSelector.builder();
-            packetSelector.matchEthType(Ethernet.TYPE_IPV4);
-            packetSelector.matchIPDst(IpPrefix.valueOf(IpAddress.valueOf(ipv4Packet.getDestinationAddress()),IpPrefix.MAX_INET_MASK_LENGTH));
+            
+            // Generate a traffic selector based on the packet that arrived.
+            TrafficSelector.Builder dstSelector = DefaultTrafficSelector.builder();
+            dstSelector.matchEthType(Ethernet.TYPE_IPV4);
+            dstSelector.matchIPDst(IpPrefix.valueOf(IpAddress.valueOf(ipv4Packet.getDestinationAddress()),IpPrefix.MAX_INET_MASK_LENGTH));
+            
+            // Generate another traffic selector that matches SRC instead of DST.
+            TrafficSelector.Builder srcSelector = DefaultTrafficSelector.builder();
+            srcSelector.matchEthType(Ethernet.TYPE_IPV4);
+            srcSelector.matchIPSrc(IpPrefix.valueOf(IpAddress.valueOf(ipv4Packet.getSourceAddress()),IpPrefix.MAX_INET_MASK_LENGTH));
 
-            TrafficSelector.Builder packetSelector2 = DefaultTrafficSelector.builder();
-            packetSelector2.matchEthType(Ethernet.TYPE_IPV4);
-            packetSelector2.matchIPSrc(IpPrefix.valueOf(IpAddress.valueOf(ipv4Packet.getSourceAddress()),IpPrefix.MAX_INET_MASK_LENGTH));
-
-            /*
-            //Handle TCP packets here.
-            if (ipv4Packet.getProtocol() == IPv4.PROTOCOL_TCP) {
-                TCP tcpPkt = (TCP) ipv4Packet.getPayload();
-                packetSelector.matchTcpDst(TpPort.tpPort(tcpPkt.getDestinationPort()));
-            }
-            //Handle UPD packets here.
-            else if (ipv4Packet.getProtocol() == IPv4.PROTOCOL_UDP) {
-                UDP udpPkt = (UDP) ipv4Packet.getPayload();
-                packetSelector.matchUdpDst(TpPort.tpPort(udpPkt.getDestinationPort()));
-            }
-            */
-
+            // Fetch the current rules
             ArrayList<TrafficSelector> aclRules = acl.getAclRules();
 
             // If the current packet's selector matches any of the ACL rules, DROP the packet and its flow.
             Boolean block = true;
             for (TrafficSelector selector:aclRules){
-                if (selector.equals(packetSelector.build()) || selector.equals((packetSelector2.build()))){
+                if (selector.equals(dstSelector.build()) || selector.equals((srcSelector.build()))){
                     block = false;
                     break;
                 }
@@ -171,8 +152,8 @@ public class AppComponent {
 
             if (block) {
                 log.info("Flow should be dropped");
-                log.info(packetSelector.build().toString());
-                log.info(packetSelector2.build().toString());
+                log.info(dstSelector.build().toString());
+                log.info(srcDelector.build().toString());
                 dropFlow(packetSelector.build(),context);
                 context.block();    //Since we already handled the packet, BLOCK any access to it by other ONOS apps (e.g. the Forwarding app)
                 return;

@@ -96,14 +96,14 @@ public class AppComponent {
     }
 
     public void defineAclRules(){
-        TrafficSelector.Builder selectorBuilder = DefaultTrafficSelector.builder();
-        selectorBuilder.matchEthType(Ethernet.TYPE_IPV4);
-        selectorBuilder.matchIPDst(IpPrefix.valueOf(IpAddress.valueOf("10.0.2.15"),IpPrefix.MAX_INET_MASK_LENGTH));
-        acl.addClient(selectorBuilder.build());
-        TrafficSelector.Builder selectorBuilder2 = DefaultTrafficSelector.builder();
-        selectorBuilder2.matchEthType(Ethernet.TYPE_IPV4);
-        selectorBuilder2.matchIPSrc(IpPrefix.valueOf(IpAddress.valueOf("10.0.2.15"),IpPrefix.MAX_INET_MASK_LENGTH));
-        acl.addClient(selectorBuilder2.build());
+        TrafficSelector.Builder dstBuilder = DefaultTrafficSelector.builder();
+        dstBuilder.matchEthType(Ethernet.TYPE_IPV4);
+        dstBuilder.matchIPDst(IpPrefix.valueOf(IpAddress.valueOf("10.0.2.15"),IpPrefix.MAX_INET_MASK_LENGTH));
+        acl.addClient(dstBuilder.build());
+        TrafficSelector.Builder srcBuilder = DefaultTrafficSelector.builder();
+        srcBuilder.matchEthType(Ethernet.TYPE_IPV4);
+        srcBuilder.matchIPSrc(IpPrefix.valueOf(IpAddress.valueOf("10.0.2.15"),IpPrefix.MAX_INET_MASK_LENGTH));
+        acl.addClient(srcBuilder.build());
     }
 
     private class ReactivePacketProcessor implements PacketProcessor {
